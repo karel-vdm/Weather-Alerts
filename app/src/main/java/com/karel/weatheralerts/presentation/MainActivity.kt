@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.karel.weatheralerts.databinding.ActivityMainBinding
-import com.karel.weatheralerts.domain.model.WeatherAlertsEntity
+import com.karel.weatheralerts.presentation.model.WeatherAlerts
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         binding.errorMessage.text = error
     }
 
-    private fun showWeatherAlerts(weatherAlerts: WeatherAlertsEntity) {
+    private fun showWeatherAlerts(weatherAlerts: WeatherAlerts) {
         weatherAlertAdapter.addItems(weatherAlerts.weatherAlerts)
     }
 

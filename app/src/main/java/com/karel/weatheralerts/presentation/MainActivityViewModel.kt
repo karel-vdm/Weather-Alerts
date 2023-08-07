@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.karel.weatheralerts.domain.UseCaseGetWeatherAlerts
 import androidx.lifecycle.viewModelScope
-import com.karel.weatheralerts.domain.model.WeatherAlertsEntity
+import com.karel.weatheralerts.presentation.model.WeatherAlerts
+import com.karel.weatheralerts.presentation.model.transform
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -24,8 +25,8 @@ class MainActivityViewModel @Inject constructor(
     private var _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
-    private var _weatherAlerts = MutableLiveData<WeatherAlertsEntity>()
-    val weatherAlerts: LiveData<WeatherAlertsEntity> get() = _weatherAlerts
+    private var _weatherAlerts = MutableLiveData<WeatherAlerts>()
+    val weatherAlerts: LiveData<WeatherAlerts> get() = _weatherAlerts
 
     fun onCreate() {
         getWeatherAlerts()
@@ -41,7 +42,7 @@ class MainActivityViewModel @Inject constructor(
                     onGetWeatherAlertsError("Error getting weather alerts: ${exception.message}")
                 }
                 .collect { result ->
-                    onGetWeatherAlertsComplete(result)
+                    onGetWeatherAlertsComplete(result.transform())
                 }
         }
     }
@@ -55,7 +56,7 @@ class MainActivityViewModel @Inject constructor(
         _error.postValue(error)
     }
 
-    private fun onGetWeatherAlertsComplete(result: WeatherAlertsEntity) {
+    private fun onGetWeatherAlertsComplete(result: WeatherAlerts) {
         _isLoading.postValue(false)
         _error.postValue("")
         _weatherAlerts.postValue(result)

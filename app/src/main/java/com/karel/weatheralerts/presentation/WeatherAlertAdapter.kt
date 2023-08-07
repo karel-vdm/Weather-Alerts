@@ -5,35 +5,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.karel.weatheralerts.databinding.WeatherAlertItemBinding
-import com.karel.weatheralerts.domain.model.WeatherAlertEntity
+import com.karel.weatheralerts.presentation.model.WeatherAlert
 
 class WeatherAlertAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: MutableList<WeatherAlertEntity> = mutableListOf()
+    private var items: MutableList<WeatherAlert> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        /*return if (viewType == MOVIE) {*/
         val binding: WeatherAlertItemBinding = WeatherAlertItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return WeatherListItemViewHolder(binding)
-        /*        } else {
-                    val binding: MovieItemShimmerBinding = MovieItemShimmerBinding
-                        .inflate(LayoutInflater.from(parent.context), parent, false)
-                    ViewHolderShimmer(binding)
-                }*/
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
-
-    /*    override fun getItemViewType(position: Int): Int {
-            if (items[position].isInShimmerState) {
-                return SHIMMER
-            }
-            return MOVIE
-        }*/
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is WeatherListItemViewHolder) {
@@ -41,19 +27,16 @@ class WeatherAlertAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun addItems(itemsToAdd: List<WeatherAlertEntity>) {
+    fun addItems(itemsToAdd: List<WeatherAlert>) {
         val diffResult = DiffUtil.calculateDiff(DiffCallback(items, itemsToAdd))
         diffResult.dispatchUpdatesTo(this)
         items.clear()
         items.addAll(itemsToAdd)
-        /*        if (!isLastPage && !isEmptyState) {
-                    items.add(WeatherListItemViewHolder(isInShimmerState = true))
-                }*/
     }
 
     private class DiffCallback(
-        private val oldList: List<WeatherAlertEntity>,
-        private val newList: List<WeatherAlertEntity>,
+        private val oldList: List<WeatherAlert>,
+        private val newList: List<WeatherAlert>,
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldList.size
         override fun getNewListSize(): Int = newList.size
